@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 function Home() {
     return (
         <section id="welcome-world">
@@ -21,7 +23,7 @@ function Home() {
                         <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
                     </div>
                     <div className="data-buttons">
-                        <a href="#" className="btn details-btn">Details</a>
+                        <Link to="/catalog/details" className="btn details-btn">Details</Link>
                     </div>
                 </div>
                 <div className="game">
@@ -33,7 +35,7 @@ function Home() {
                         <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
                     </div>
                     <div className="data-buttons">
-                        <a href="#" className="btn details-btn">Details</a>
+                        <Link to="/catalog/details" className="btn details-btn">Details</Link>
                     </div>
                 </div>
                 <div className="game">
@@ -45,7 +47,7 @@ function Home() {
                         <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
                     </div>
                     <div className="data-buttons">
-                        <a href="#" className="btn details-btn">Details</a>
+                        <Link to="/catalog/details" className="btn details-btn">Details</Link>
                     </div>
                 </div>
 
