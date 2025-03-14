@@ -1,7 +1,22 @@
-function Create(params) {
+import { useNavigate } from "react-router";
+import { postAuth } from "../http/services";
+
+function Create() {
+    const navigate = useNavigate()
+    const onCreate = async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
+        try {
+            const fetched = await postAuth('http://localhost:3030/data/games', 'POST', data);
+            navigate('/');
+        } catch (error) {
+            alert(error.message);
+        }
+    }
     return (
         <section id="create-page" className="auth">
-            <form id="create">
+            <form id="create" onSubmit={onCreate}>
                 <div className="container">
 
                     <h1>Create Game</h1>

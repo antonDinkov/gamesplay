@@ -12,8 +12,9 @@ export default function Catalog() {
                 alert(error.message);
             }
         }
+        games()
     }, []);
-
+    
     return (
         <section id="catalog-page">
             <h1>All Games</h1>
