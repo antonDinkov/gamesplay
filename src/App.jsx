@@ -18,7 +18,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login setFlagman={setFlagman}/>} />
-                    <Route path="/register" element={<Register/>} />
+                    <Route path="/register" element={<Register setFlagman={setFlagman} />} />
                     <Route path="/create" element={<Create />} />
                     <Route path="/catalog" element={<Catalog />} />
                     <Route path="/catalog/details" element={<Details />} />

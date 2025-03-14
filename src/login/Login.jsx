@@ -6,9 +6,9 @@ function Login({ setFlagman }) {
     const onLogin = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        const gameData = Object.fromEntries(formData);
+        const data = Object.fromEntries(formData);
         try {
-            const fetched = await post('http://localhost:3030/users/login', 'POST', gameData);
+            const fetched = await post('http://localhost:3030/users/login', 'POST', data);
             setFlagman(true);
             navigate('/');
         } catch (error) {
