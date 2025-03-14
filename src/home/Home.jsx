@@ -1,6 +1,19 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import { get } from "../http/services";
 
 function Home() {
+    const [catalog, setCatalog] = useState([])
+    useEffect(() => {
+        const games = async (params) => {
+            try {
+                setCatalog((await get('http://localhost:3030/data/games?sortBy=_createdOn%20desc&distinct=category')).slice(0, 3));
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+        games()
+    }, []);
     return (
         <section id="welcome-world">
 
@@ -14,45 +27,27 @@ function Home() {
                 <h1>Latest Games</h1>
 
                 {/* <!-- Display div: with information about every game (if any) --> */}
-                <div className="game">
-                    <div className="image-wrap">
-                        <img src="/images/CoverFire.png" />
-                    </div>
-                    <h3>Cover Fire</h3>
-                    <div className="rating">
-                        <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
-                    </div>
-                    <div className="data-buttons">
-                        <Link to="/catalog/details" className="btn details-btn">Details</Link>
-                    </div>
-                </div>
-                <div className="game">
-                    <div className="image-wrap">
-                        <img src="/images/ZombieLang.png" />
-                    </div>
-                    <h3>Zombie Lang</h3>
-                    <div className="rating">
-                        <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
-                    </div>
-                    <div className="data-buttons">
-                        <Link to="/catalog/details" className="btn details-btn">Details</Link>
-                    </div>
-                </div>
-                <div className="game">
-                    <div className="image-wrap">
-                        <img src="/images/MineCraft.png" />
-                    </div>
-                    <h3>MineCraft</h3>
-                    <div className="rating">
-                        <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
-                    </div>
-                    <div className="data-buttons">
-                        <Link to="/catalog/details" className="btn details-btn">Details</Link>
-                    </div>
-                </div>
+
+                {catalog.length > 0 ? (
+                    catalog.map((game) => (
+                        <div className="game">
+                            <div className="image-wrap">
+                                <img src={game.imageUrl} />
+                            </div>
+                            <h3>{game.title}</h3>
+                            <div className="rating">
+                                <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+                            </div>
+                            <div className="data-buttons">
+                                <Link to={`/catalog/details/${game._id}`} className="btn details-btn">Details</Link>
+                            </div>
+                        </div>
+                    ))) : (
+                    <p className="no-articles">No games yet</p>
+                )}
 
                 {/* <!-- Display paragraph: If there is no games  --> */}
-                <p className="no-articles">No games yet</p>
+
             </div>
         </section>
     )
