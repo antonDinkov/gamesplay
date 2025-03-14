@@ -1,6 +1,25 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { delUserData, getUserToken } from "./http/localStorage";
+import { useEffect } from "react";
 
-function Navigation() {
+function Navigation({setFlagman, flagman}) {
+    
+    const navigate = useNavigate();
+    useEffect (() => {
+        const token = getUserToken();
+        if (token) {
+            setFlagman(true);
+        } else {
+            setFlagman(false);
+        }
+    }, []);
+
+    const onLogout = () => {
+        const data = delUserData();
+        setFlagman(false)
+        navigate('/');
+    }
+
     return (
         <header>
             {/* <!-- Navigation --> */}
@@ -8,15 +27,20 @@ function Navigation() {
             <nav>
                 <Link to="/catalog">All games</Link>
                 {/* <!-- Logged-in users --> */}
-                <div id="user">
+                {flagman ? (
+                    <div id="user">
                     <Link to="/create">Create Game</Link>
-                    <Link to="/logout">Logout</Link>
+                    <Link to='/' onClick={onLogout}>Logout</Link>
                 </div>
-                {/* <!-- Guest users --> */}
-                <div id="guest">
+                ) : (
+                    <div id="guest">
                     <Link to="/login">Login</Link>
                     <Link to="/register">Register</Link>
                 </div>
+                )}
+                
+                {/* <!-- Guest users --> */}
+                
             </nav>
         </header>
     )

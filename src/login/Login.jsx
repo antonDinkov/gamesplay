@@ -1,13 +1,14 @@
 import { useNavigate } from "react-router";
 import { post } from "../http/services";
 
-function Login() {
+function Login({setFlagman}) {
     const navigate = useNavigate();
     const onLogin = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
         const gameData = Object.fromEntries(formData);
         const fetched =  await post ('http://localhost:3030/users/login', 'POST', gameData);
+        setFlagman(true);
         navigate('/');
     }
     return (

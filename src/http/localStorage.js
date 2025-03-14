@@ -4,5 +4,10 @@ export function setUser(data) {
 }
 
 export function getUserToken() {
-    return JSON.parse(localStorage.getItem('userToken'));
+    return localStorage.getItem('userToken');
+}
+
+export function delUserData() {
+    localStorage.removeItem('userToken');
+    localStorage.removeItem('userId');
 }
