@@ -1,15 +1,20 @@
 import { useNavigate } from "react-router";
 import { post } from "../http/services";
 
-function Login({setFlagman}) {
+function Login({ setFlagman }) {
     const navigate = useNavigate();
     const onLogin = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
         const gameData = Object.fromEntries(formData);
-        const fetched =  await post ('http://localhost:3030/users/login', 'POST', gameData);
-        setFlagman(true);
-        navigate('/');
+        try {
+            const fetched = await post('http://localhost:3030/users/login', 'POST', gameData);
+            setFlagman(true);
+            navigate('/');
+        } catch (error) {
+            alert(error.message);
+        }
+
     }
     return (
         <section id="login-page" className="auth">
