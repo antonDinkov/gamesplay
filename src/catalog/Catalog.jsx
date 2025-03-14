@@ -1,6 +1,20 @@
 import { Link } from "react-router";
+import { get } from "../http/services";
+import { useEffect, useState } from "react";
 
 export default function Catalog() {
+    const [catalog, setCatalog] = useState([])
+    useEffect(() => {
+        const games = async (params) => {
+            try {
+                await get ('http://localhost:3030/data/games?sortBy=_createdOn%20desc');
+            } catch (error) {
+                alert (error.message);
+            }
+        }
+        setCatalog(games);
+    }, []);
+
     return (
         <section id="catalog-page">
             <h1>All Games</h1>

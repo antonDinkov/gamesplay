@@ -18,3 +18,16 @@ export const post = async (url, method, dataBody) => {
         throw err;
     }
 };
+
+export const get = async (url) => {
+    try {
+        const response = await fetch (url);
+        if(!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = response.json();
+        return data;
+    } catch (err) {
+        throw err;
+    }
+}
