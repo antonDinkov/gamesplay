@@ -1,7 +1,18 @@
+import { useNavigate } from "react-router";
+import { post } from "../http/services";
+
 function Login() {
+    const navigate = useNavigate();
+    const onLogin = async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const gameData = Object.fromEntries(formData);
+        const fetched =  await post ('http://localhost:3030/users/login', 'POST', gameData);
+        navigate('/');
+    }
     return (
         <section id="login-page" className="auth">
-            <form id="login">
+            <form id="login" onSubmit={onLogin}>
 
                 <div className="container">
                     <div className="brand-logo"></div>
