@@ -8,12 +8,16 @@ function Home() {
         const games = async (params) => {
             try {
                 setCatalog((await get('http://localhost:3030/data/games?sortBy=_createdOn%20desc&distinct=category')).slice(0, 3));
+                
+                
             } catch (error) {
                 alert(error.message);
             }
         }
         games()
     }, []);
+    console.log(catalog);
+    
     return (
         <section id="welcome-world">
 
@@ -30,7 +34,7 @@ function Home() {
 
                 {catalog.length > 0 ? (
                     catalog.map((game) => (
-                        <div className="game">
+                        <div className="game" key={game._id}>
                             <div className="image-wrap">
                                 <img src={game.imageUrl} />
                             </div>

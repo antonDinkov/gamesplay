@@ -48,6 +48,9 @@ export const get = async (url) => {
     try {
         const response = await fetch (url);
         if(!response.ok) {
+            if(response.status == 404) {
+                throw new Error(`The game list is Empty! Please, create new game`);
+            }
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = response.json();
