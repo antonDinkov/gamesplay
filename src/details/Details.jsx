@@ -72,8 +72,9 @@ export default function Details() {
             comment: theComment
         }
         try {
-            const fetch = await postAuth('http://localhost:3030/data/comments', 'POST', body);
+            const newComment = await postAuth('http://localhost:3030/data/comments', 'POST', body);
             const form = document.querySelector('.form');
+            setComments((prevComments) => [...prevComments, newComment])
             form.reset();
         } catch (error) {
             alert(error.message);
@@ -102,7 +103,7 @@ export default function Details() {
                         {/* <!-- list all comments for current game (If any) --> */}
                         {comments.length > 0 ? (
                             comments.map((comm) => (
-                                <li className="comment">
+                                <li key={comm._id} className="comment">
                                     <p>{comm.comment}</p>
                                 </li>
                             ))
