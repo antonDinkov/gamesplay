@@ -7,12 +7,17 @@ export default function Details() {
     const { id } = useParams()
     const [details, setDetails] = useState({});
     const [isGuest, setIsGueast] = useState(true);
+    const [isOwner, setIsOwner] = useState(false)
     const [comments, setComments] = useState([]);
     const navigate = useNavigate();
     useEffect(() => {
         const fetched = async () => {
             try {
+                const user = getUserId();
                 const data = await get(`http://localhost:3030/data/games/${id}`);
+                if (data._ownerId == user) {
+                    setIsOwner(true);
+                };
                 setDetails(data);
             } catch (error) {
                 alert(error.message);
@@ -116,10 +121,13 @@ export default function Details() {
                 </div>
 
                 {/* <!-- Edit/Delete buttons ( Only for creator of this game )  --> */}
-                <div className="buttons">
+                {isOwner ? (
+                    <div className="buttons">
                     <Link to={`/edit/${details._id}`} className="button">Edit</Link>
                     <Link to="#" onClick={onDelete} className="button">Delete</Link>
                 </div>
+                ): ''}
+                
             </div>
 
             {/* <!-- Bonus -->
