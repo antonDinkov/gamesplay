@@ -7,6 +7,10 @@ export function getUserToken() {
     return localStorage.getItem('userToken');
 }
 
+export function getUserId() {
+    return localStorage.getItem('userId');
+}
+
 export function delUserData() {
     localStorage.removeItem('userToken');
     localStorage.removeItem('userId');

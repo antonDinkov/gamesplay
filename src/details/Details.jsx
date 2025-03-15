@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
-import { del, get } from "../http/services";
-import { getUserToken } from "../http/localStorage";
+import { del, get, postAuth } from "../http/services";
+import { getUserId, getUserToken } from "../http/localStorage";
 
 export default function Details() {
     const { id } = useParams()
     const [details, setDetails] = useState({});
     const [isGuest, setIsGueast] = useState(true);
+    const [comments, setComments] = useState([]);
     const navigate = useNavigate();
     useEffect(() => {
         const fetched = async () => {
@@ -20,13 +21,30 @@ export default function Details() {
         fetched();
     }, [id]);
 
-    useEffect (() => {
+    useEffect(() => {
         const user = getUserToken();
         if (user) {
             setIsGueast(false);
         }
-        
-    }, [isGuest])
+
+    }, [isGuest]);
+
+    useEffect(() => {
+        if (!details._id) {
+            return;
+        }
+        const gameId = details._id;
+        const fetched = async () => {
+            try {
+                const requesrUrl = `http://localhost:3030/data/comments?where=gameId%3D%22${gameId}%22`
+                const data = await get(requesrUrl);
+                setComments(data);
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+        fetched();
+    }, [details]);
 
     if (!details) return <p>Loading...</p>;
 
@@ -39,6 +57,28 @@ export default function Details() {
         } catch (error) {
             alert(error.message);
         }
+    }
+
+    const onPostComments = async (e) => {
+        e.preventDefault();
+        const userId = getUserId();
+        if (userId === details._ownerId) {
+            return;
+        };
+        const gameId = details._id;
+        const theComment = document.getElementsByName('comment')[0].value;
+        const body = {
+            gameId,
+            comment: theComment
+        }
+        try {
+            const fetch = await postAuth('http://localhost:3030/data/comments', 'POST', body);
+            const form = document.querySelector('.form');
+            form.reset();
+        } catch (error) {
+            alert(error.message);
+        }
+
     }
 
     return (
@@ -60,15 +100,18 @@ export default function Details() {
                     <h2>Comments:</h2>
                     <ul>
                         {/* <!-- list all comments for current game (If any) --> */}
-                        <li className="comment">
-                            <p>Content: I rate this one quite highly.</p>
-                        </li>
-                        <li className="comment">
-                            <p>Content: The best game.</p>
-                        </li>
+                        {comments.length > 0 ? (
+                            comments.map((comm) => (
+                                <li className="comment">
+                                    <p>{comm.comment}</p>
+                                </li>
+                            ))
+                        ) : (
+                        <p className="no-comment">No comments.</p>
+                        )}
                     </ul>
                     {/* <!-- Display paragraph: If there are no games in the database --> */}
-                    <p className="no-comment">No comments.</p>
+
                 </div>
 
                 {/* <!-- Edit/Delete buttons ( Only for creator of this game )  --> */}
@@ -80,17 +123,17 @@ export default function Details() {
 
             {/* <!-- Bonus -->
             <!-- Add Comment ( Only for logged-in users, which is not creators of the current game ) --> */}
-            
+
             {!isGuest ? (
                 <article className="create-comment">
-                <label>Add new comment:</label>
-                <form className="form">
-                    <textarea name="comment" placeholder="Comment......"></textarea>
-                    <input className="btn submit" type="submit" value="Add Comment" />
-                </form>
-            </article>
+                    <label>Add new comment:</label>
+                    <form className="form" onSubmit={onPostComments}>
+                        <textarea name="comment" placeholder="Comment......"></textarea>
+                        <input className="btn submit" type="submit" value="Add Comment" />
+                    </form>
+                </article>
             ) : ''}
-            
+
 
         </section>
     )
