@@ -1,26 +1,34 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
-import { get } from "../http/services";
+import { Link, useNavigate, useParams } from "react-router";
+import { del, get } from "../http/services";
 
 export default function Details() {
-    const {id} = useParams()
+    const { id } = useParams()
     const [details, setDetails] = useState({});
-    useEffect (() => {
-            const fetched = async () => {
-                try {
-                    const data = await get (`http://localhost:3030/data/games/${id}`);
-                    setDetails(data);
-                } catch (error) {
-                    alert (error.message);
-                }
+    const navigate = useNavigate();
+    useEffect(() => {
+        const fetched = async () => {
+            try {
+                const data = await get(`http://localhost:3030/data/games/${id}`);
+                setDetails(data);
+            } catch (error) {
+                alert(error.message);
             }
-            fetched();
+        }
+        fetched();
     }, [id])
 
     if (!details) return <p>Loading...</p>;
 
-    const onDelete = async () => {
-        
+    const onDelete = async (e) => {
+        e.preventDefault();
+
+        try {
+            await del(`http://localhost:3030/data/games/${id}`, 'DELETE');
+            navigate("/");
+        } catch (error) {
+            alert(error.message);
+        }
     }
 
     return (
@@ -55,8 +63,8 @@ export default function Details() {
 
                 {/* <!-- Edit/Delete buttons ( Only for creator of this game )  --> */}
                 <div className="buttons">
-                    <Link to="#" className="button">Edit</Link>
-                    <Link to="#" className="button">Delete</Link>
+                    <Link to={`/edit/${details._id}`} className="button">Edit</Link>
+                    <Link to="#" onClick={onDelete} className="button">Delete</Link>
                 </div>
             </div>
 

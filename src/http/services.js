@@ -72,7 +72,6 @@ export const del = async (url, method) => {
         })
         if(!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
-            
         }
     } catch (error) {
         

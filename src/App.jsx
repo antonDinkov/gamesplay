@@ -7,6 +7,7 @@ import Create from "./create/Create"
 import Catalog from "./catalog/Catalog"
 import Details from "./details/Details"
 import { useState } from "react"
+import Edit from "./edit/Edit"
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
                     <Route path="/create" element={<Create />} />
                     <Route path="/catalog" element={<Catalog />} />
                     <Route path="/details/:id" element={<Details />} />
+                    <Route path="/edit/:id" element={<Edit />} />
                 </Routes>
             </main>
 
