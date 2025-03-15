@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { del, get } from "../http/services";
+import { getUserToken } from "../http/localStorage";
 
 export default function Details() {
     const { id } = useParams()
     const [details, setDetails] = useState({});
+    const [isGuest, setIsGueast] = useState(true);
     const navigate = useNavigate();
     useEffect(() => {
         const fetched = async () => {
@@ -16,7 +18,15 @@ export default function Details() {
             }
         }
         fetched();
-    }, [id])
+    }, [id]);
+
+    useEffect (() => {
+        const user = getUserToken();
+        if (user) {
+            setIsGueast(false);
+        }
+        
+    }, [isGuest])
 
     if (!details) return <p>Loading...</p>;
 
@@ -70,13 +80,17 @@ export default function Details() {
 
             {/* <!-- Bonus -->
             <!-- Add Comment ( Only for logged-in users, which is not creators of the current game ) --> */}
-            <article className="create-comment">
+            
+            {!isGuest ? (
+                <article className="create-comment">
                 <label>Add new comment:</label>
                 <form className="form">
                     <textarea name="comment" placeholder="Comment......"></textarea>
                     <input className="btn submit" type="submit" value="Add Comment" />
                 </form>
             </article>
+            ) : ''}
+            
 
         </section>
     )

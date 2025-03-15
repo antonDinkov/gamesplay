@@ -16,8 +16,6 @@ function Home() {
         }
         games()
     }, []);
-    console.log(catalog);
-    
     return (
         <section id="welcome-world">
 
