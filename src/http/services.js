@@ -59,3 +59,22 @@ export const get = async (url) => {
         throw err;
     }
 }
+
+export const del = async (url, method) => {
+    try {
+        const token = getUserToken();
+        if(!token){
+            throw new Error('You Have No Authotisation');
+        }
+        const response = await fetch (url, {
+            method,
+            headers: {'X-Authorization': token}
+        })
+        if(!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+            
+        }
+    } catch (error) {
+        
+    }
+}

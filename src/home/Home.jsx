@@ -43,7 +43,7 @@ function Home() {
                                 <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
                             </div>
                             <div className="data-buttons">
-                                <Link to={`/catalog/details/${game._id}`} className="btn details-btn">Details</Link>
+                                <Link to={`/details/${game._id}`} className="btn details-btn">Details</Link>
                             </div>
                         </div>
                     ))) : (
